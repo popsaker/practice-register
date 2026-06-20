@@ -24,7 +24,10 @@
       </div>
       <div>
         <label for="fuel">Топливо</label>
-        <input id="fuel" name="fuel" type="text" value="{{ $car['fuel'] ?? '' }}">
+        <select id="fuel" name="fuel">
+          <option value="Бензин" {{ ($car['fuel'] ?? '') === 'Бензин' ? 'selected' : '' }}>Бензин</option>
+          <option value="Дизель" {{ ($car['fuel'] ?? '') === 'Дизель' ? 'selected' : '' }}>Дизель</option>
+        </select>
       </div>
       <div>
         <label for="engine">Двигатель</label>
@@ -36,11 +39,18 @@
       </div>
       <div>
         <label for="transmission">Коробка</label>
-        <input id="transmission" name="transmission" type="text" value="{{ $car['transmission'] ?? '' }}">
+        <select id="transmission" name="transmission">
+          <option value="Автомат" {{ ($car['transmission'] ?? '') === 'Автомат' ? 'selected' : '' }}>Автомат</option>
+          <option value="Механика" {{ ($car['transmission'] ?? '') === 'Механика' ? 'selected' : '' }}>Механика</option>
+        </select>
       </div>
       <div>
         <label for="drive_type">Привод</label>
-        <input id="drive_type" name="drive_type" type="text" value="{{ $car['drive_type'] ?? '' }}">
+        <select id="drive_type" name="drive_type">
+          <option value="Передний" {{ ($car['drive_type'] ?? '') === 'Передний' ? 'selected' : '' }}>Передний</option>
+          <option value="Задний" {{ ($car['drive_type'] ?? '') === 'Задний' ? 'selected' : '' }}>Задний</option>
+          <option value="Полный" {{ ($car['drive_type'] ?? '') === 'Полный' ? 'selected' : '' }}>Полный</option>
+        </select>
       </div>
       <div>
         <label for="body_type">Кузов</label>

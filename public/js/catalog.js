@@ -17,4 +17,16 @@ document.addEventListener('DOMContentLoaded', function () {
       });
     });
   });
+
+  cards.forEach(card => {
+    const detailBtn = card.querySelector('.view-details');
+    if (!detailBtn) return;
+
+    detailBtn.addEventListener('click', () => {
+      const link = card.querySelector('.view-details');
+      if (link) {
+        window.location.href = link.href;
+      }
+    });
+  });
 });

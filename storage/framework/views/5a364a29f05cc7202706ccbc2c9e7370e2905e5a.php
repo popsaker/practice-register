@@ -1,16 +1,16 @@
-@extends('layouts.app')
 
-@section('content')
+
+<?php $__env->startSection('content'); ?>
   <div class="container admin-container">
     <div class="admin-header">
       <h1>Админ-панель</h1>
-      <a href="{{ url('/admin/cars/create') }}" class="btn-main">Добавить машину</a>
+      <a href="<?php echo e(url('/admin/cars/create')); ?>" class="btn-main">Добавить машину</a>
     </div>
-    @yield('admin-content')
+    <?php echo $__env->yieldContent('admin-content'); ?>
   </div>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@push('styles')
+<?php $__env->startPush('styles'); ?>
   <style>
     .admin-container {
       padding: 40px 0;
@@ -115,4 +115,6 @@
       grid-column: 1 / -1;
     }
   </style>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.app', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\OSPanel\home\practice-register\resources\views/admin/layout.blade.php ENDPATH**/ ?>

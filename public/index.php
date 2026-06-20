@@ -54,6 +54,64 @@ function requireAdmin(): void
     }
 }
 
+function getCart(): array
+{
+    return $_SESSION['cart'] ?? [];
+}
+
+function getCartCount(): int
+{
+    $count = 0;
+    foreach (getCart() as $quantity) {
+        $count += max(0, intval($quantity));
+    }
+    return $count;
+}
+
+function addToCart(int $id): void
+{
+    $cart = getCart();
+    $cart[$id] = max(1, intval($cart[$id] ?? 0) + 1);
+    $_SESSION['cart'] = $cart;
+}
+
+function removeFromCart(int $id): void
+{
+    $cart = getCart();
+    if (isset($cart[$id])) {
+        unset($cart[$id]);
+        $_SESSION['cart'] = $cart;
+    }
+}
+
+function clearCart(): void
+{
+    unset($_SESSION['cart']);
+}
+
+function getCartItems(): array
+{
+    $items = [];
+    foreach (getCart() as $id => $quantity) {
+        $car = getCarById((int) $id);
+        if (! $car || intval($quantity) <= 0) {
+            continue;
+        }
+        $car['quantity'] = intval($quantity);
+        $items[] = $car;
+    }
+    return $items;
+}
+
+function getCartTotal(): float
+{
+    $total = 0;
+    foreach (getCartItems() as $item) {
+        $total += floatval($item['price']) * intval($item['quantity']);
+    }
+    return $total;
+}
+
 use Jenssegers\Blade\Blade;
 
 $views = __DIR__ . '/../resources/views';
@@ -64,7 +122,10 @@ $blade = new Blade($views, $cache);
 function renderView(string $view, array $data = []): void
 {
     global $blade;
-    $sharedData = ['currentUser' => currentUser()];
+    $sharedData = [
+        'currentUser' => currentUser(),
+        'cartCount' => getCartCount(),
+    ];
     echo $blade->render($view, array_merge($sharedData, $data));
 }
 
@@ -138,7 +199,7 @@ function saveCar(array $data, int $id = null): bool
             'INSERT INTO acars (brand, model, type, price, fuel, engine, horsepower, transmission, drive_type, body_type, year, acceleration, consumption, color, stock_count, city, image, description, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())'
         );
         $stmt->bind_param(
-            'sssdsissssissssis',
+            'sssdssisssisssisss',
             $data['brand'],
             $data['model'],
             $data['type'],
@@ -163,7 +224,7 @@ function saveCar(array $data, int $id = null): bool
             'UPDATE acars SET brand = ?, model = ?, type = ?, price = ?, fuel = ?, engine = ?, horsepower = ?, transmission = ?, drive_type = ?, body_type = ?, year = ?, acceleration = ?, consumption = ?, color = ?, stock_count = ?, city = ?, image = ?, description = ? WHERE id = ?'
         );
         $stmt->bind_param(
-            'sssdsissssissssisi',
+            'sssdssisssisssisssi',
             $data['brand'],
             $data['model'],
             $data['type'],
@@ -199,6 +260,47 @@ function deleteCarById(int $id): bool
     $result = $stmt->execute();
     $stmt->close();
     return $result;
+}
+
+function renderCarDetail(int $id): void
+{
+    $car = getCarById($id);
+    if (! $car) {
+        header('HTTP/1.1 404 Not Found');
+        echo '404 Not Found';
+        exit;
+    }
+
+    renderView('car-detail', ['car' => $car]);
+}
+
+function renderCart(): void
+{
+    renderView('cart', [
+        'items' => getCartItems(),
+        'total' => getCartTotal(),
+    ]);
+}
+
+function handleAddToCart(): void
+{
+    $id = intval($_POST['id'] ?? 0);
+    if ($id > 0 && getCarById($id)) {
+        addToCart($id);
+    }
+    redirect('/cart');
+}
+
+function handleRemoveFromCart(int $id): void
+{
+    removeFromCart($id);
+    redirect('/cart');
+}
+
+function handleClearCart(): void
+{
+    clearCart();
+    redirect('/cart');
 }
 
 function renderAdminIndex(): void
@@ -286,7 +388,8 @@ if (isset($redirects[$uri])) {
 $routes = [
     'GET' => [
         '/' => function () { renderView('main'); },
-        '/catalog' => function () { renderView('catalog'); },
+        '/catalog' => function () { renderView('catalog', ['cars' => fetchCars()]); },
+        '/car/([0-9]+)' => function ($id) { renderCarDetail((int) $id); },
         '/car1' => function () { renderView('car1'); },
         '/car2' => function () { renderView('car2'); },
         '/car3' => function () { renderView('car3'); },
@@ -294,6 +397,7 @@ $routes = [
         '/car5' => function () { renderView('car5'); },
         '/login' => function () { renderView('login'); },
         '/register' => function () { renderView('register'); },
+        '/cart' => function () { renderCart(); },
         '/profile' => function () { requireAuth(); renderProfile(); },
         '/admin' => function () { requireAdmin(); renderAdminIndex(); },
         '/admin/cars' => function () { requireAdmin(); renderAdminIndex(); },
@@ -304,6 +408,9 @@ $routes = [
         '/admin/cars/store' => function () { requireAdmin(); handleAdminStore(); },
         '/admin/cars/(\d+)/update' => function ($id) { requireAdmin(); handleAdminUpdate((int) $id); },
         '/admin/cars/(\d+)/delete' => function ($id) { requireAdmin(); handleAdminDelete((int) $id); },
+        '/cart/add' => function () { handleAddToCart(); },
+        '/cart/clear' => function () { handleClearCart(); },
+        '/cart/(\d+)/remove' => function ($id) { handleRemoveFromCart((int) $id); },
     ],
 ];
 

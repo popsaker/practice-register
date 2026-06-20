@@ -9,10 +9,11 @@
 </head>
 <body>
   <header>
-    <div class="logo">RED<span>LEASING</span></div>
+    <div class="logo"><a href="{{ url('/') }}">RED<span>LEASING</span></a></div>
     <nav>
       <a href="{{ url('/') }}">Главная</a>
       <a href="{{ url('/catalog') }}">Каталог</a>
+      <a href="{{ url('/cart') }}">Корзина @if(!empty($cartCount))<span class="cart-count">{{ $cartCount }}</span>@endif</a>
       @if($currentUser)
         <a href="{{ url('/profile') }}">Профиль</a>
         @if(($currentUser['Role'] ?? '') === 'admin')

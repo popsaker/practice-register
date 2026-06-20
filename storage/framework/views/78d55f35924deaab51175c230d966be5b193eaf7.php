@@ -9,10 +9,11 @@
 </head>
 <body>
   <header>
-    <div class="logo">RED<span>LEASING</span></div>
+    <div class="logo"><a href="<?php echo e(url('/')); ?>">RED<span>LEASING</span></a></div>
     <nav>
       <a href="<?php echo e(url('/')); ?>">Главная</a>
       <a href="<?php echo e(url('/catalog')); ?>">Каталог</a>
+      <a href="<?php echo e(url('/cart')); ?>">Корзина <?php if(!empty($cartCount)): ?><span class="cart-count"><?php echo e($cartCount); ?></span><?php endif; ?></a>
       <?php if($currentUser): ?>
         <a href="<?php echo e(url('/profile')); ?>">Профиль</a>
         <?php if(($currentUser['Role'] ?? '') === 'admin'): ?>
