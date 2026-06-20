@@ -22,7 +22,7 @@
             <div class="cart-row">
               <div class="cart-item">
                 <img src="{{ asset($item['image'] ?: 'cars/sedan.png') }}" alt="{{ $item['brand'] }} {{ $item['model'] }}">
-                <div>
+                <div class="cart-item-details">
                   <div class="cart-item-title">{{ $item['brand'] }} {{ $item['model'] }}</div>
                   <div class="cart-item-meta">{{ $item['year'] }} · {{ $item['fuel'] }} · {{ $item['transmission'] }}</div>
                 </div>
@@ -31,7 +31,9 @@
               <div>{{ $item['quantity'] }}</div>
               <div>{{ number_format($item['price'] * $item['quantity'], 0, '.', ' ') }} ₽</div>
               <div>
-                <a href="{{ url('/cart/' . $item['id'] . '/remove') }}" class="btn-out">Удалить</a>
+                <form action="{{ url('/cart/' . $item['id'] . '/remove') }}" method="post">
+                  <button type="submit" class="btn-out">Удалить</button>
+                </form>
               </div>
             </div>
           @endforeach

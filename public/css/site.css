@@ -141,6 +141,7 @@ nav a:hover {
   padding: 14px;
   font-size: 16px;
   font-weight: bold;
+  text-align: center;
 }
 
 .btn-out {
@@ -209,6 +210,65 @@ h1 {
   overflow: hidden;
   display: flex;
   flex-direction: column;
+}
+
+.cart-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.cart-row {
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) 120px 80px 120px 100px;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 0;
+  border-bottom: 1px solid #222;
+}
+
+.cart-row.cart-header {
+  font-weight: 700;
+  color: var(--gray);
+  border-bottom: 2px solid #2a2a2a;
+}
+
+.cart-item {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cart-item img {
+  width: 100%;
+  max-width: 260px;
+  border-radius: 10px;
+  object-fit: cover;
+  background: #fff;
+}
+
+.cart-item-details {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cart-item-title {
+  font-weight: bold;
+}
+
+.cart-item-meta {
+  color: var(--gray);
+  font-size: 14px;
+}
+
+@media (max-width: 900px) {
+  .cart-row {
+    grid-template-columns: 1fr;
+  }
+
+  .cart-row > div:not(.cart-item) {
+    width: 100%;
+  }
 }
 
 .card img {

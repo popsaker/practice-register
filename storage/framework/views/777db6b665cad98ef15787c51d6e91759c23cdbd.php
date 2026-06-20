@@ -22,7 +22,7 @@
             <div class="cart-row">
               <div class="cart-item">
                 <img src="<?php echo e(asset($item['image'] ?: 'cars/sedan.png')); ?>" alt="<?php echo e($item['brand']); ?> <?php echo e($item['model']); ?>">
-                <div>
+                <div class="cart-item-details">
                   <div class="cart-item-title"><?php echo e($item['brand']); ?> <?php echo e($item['model']); ?></div>
                   <div class="cart-item-meta"><?php echo e($item['year']); ?> · <?php echo e($item['fuel']); ?> · <?php echo e($item['transmission']); ?></div>
                 </div>
@@ -31,7 +31,9 @@
               <div><?php echo e($item['quantity']); ?></div>
               <div><?php echo e(number_format($item['price'] * $item['quantity'], 0, '.', ' ')); ?> ₽</div>
               <div>
-                <a href="<?php echo e(url('/cart/' . $item['id'] . '/remove')); ?>" class="btn-out">Удалить</a>
+                <form action="<?php echo e(url('/cart/' . $item['id'] . '/remove')); ?>" method="post">
+                  <button type="submit" class="btn-out">Удалить</button>
+                </form>
               </div>
             </div>
           <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
