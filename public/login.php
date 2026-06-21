@@ -3,6 +3,7 @@ session_start();
 header('Content-Type: application/json');
 
 require_once __DIR__ . '/../config.php';
+require_once __DIR__ . '/cart.php';
 
 $data = json_decode(file_get_contents('php://input'), true);
 
@@ -47,6 +48,8 @@ $_SESSION['user'] = [
     'email' => $email,
     'Role' => $user['Role'] ?? 'user'
 ];
+
+restoreUserCart($user['id']);
 
 echo json_encode([
     'success' => true,

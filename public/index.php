@@ -4,6 +4,7 @@ require __DIR__ . '/../vendor/autoload.php';
 require __DIR__ . '/../config.php';
 
 session_start();
+require_once __DIR__ . '/cart.php';
 
 if (! function_exists('url')) {
     function url(string $path = '/'): string
@@ -27,9 +28,11 @@ if (! function_exists('asset')) {
     }
 }
 
-function currentUser(): ?array
-{
-    return $_SESSION['user'] ?? null;
+if (! function_exists('currentUser')) {
+    function currentUser(): ?array
+    {
+        return $_SESSION['user'] ?? null;
+    }
 }
 
 function requireAuth(): void
@@ -54,63 +57,6 @@ function requireAdmin(): void
     }
 }
 
-function getCart(): array
-{
-    return $_SESSION['cart'] ?? [];
-}
-
-function getCartCount(): int
-{
-    $count = 0;
-    foreach (getCart() as $quantity) {
-        $count += max(0, intval($quantity));
-    }
-    return $count;
-}
-
-function addToCart(int $id): void
-{
-    $cart = getCart();
-    $cart[$id] = max(1, intval($cart[$id] ?? 0) + 1);
-    $_SESSION['cart'] = $cart;
-}
-
-function removeFromCart(int $id): void
-{
-    $cart = getCart();
-    if (isset($cart[$id])) {
-        unset($cart[$id]);
-        $_SESSION['cart'] = $cart;
-    }
-}
-
-function clearCart(): void
-{
-    unset($_SESSION['cart']);
-}
-
-function getCartItems(): array
-{
-    $items = [];
-    foreach (getCart() as $id => $quantity) {
-        $car = getCarById((int) $id);
-        if (! $car || intval($quantity) <= 0) {
-            continue;
-        }
-        $car['quantity'] = intval($quantity);
-        $items[] = $car;
-    }
-    return $items;
-}
-
-function getCartTotal(): float
-{
-    $total = 0;
-    foreach (getCartItems() as $item) {
-        $total += floatval($item['price']) * intval($item['quantity']);
-    }
-    return $total;
-}
 
 use Jenssegers\Blade\Blade;
 

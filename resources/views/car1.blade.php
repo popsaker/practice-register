@@ -34,7 +34,7 @@
         </div>
 
         <button class="btn-red">Оставить заявку</button>
-        <button class="btn-out">Получить консультацию</button>
+        <button class="btn-out" data-placeholder="consult">Получить консультацию</button>
       </div>
     </div>
 

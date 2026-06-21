@@ -48,7 +48,7 @@
             <form action="{{ url('/cart/clear') }}" method="post">
               <button type="submit" class="btn-out">Очистить корзину</button>
             </form>
-            <a href="#" class="btn-red">Оформить заказ</a>
+            <a href="#" class="btn-red" data-placeholder="order">Оформить заказ</a>
           </div>
         </div>
       @else

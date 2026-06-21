@@ -1,5 +1,12 @@
 <?php
 
+if (! function_exists('currentUser')) {
+    function currentUser(): ?array
+    {
+        return $_SESSION['user'] ?? null;
+    }
+}
+
 if (! function_exists('ensureUserCartTableExists')) {
     function ensureUserCartTableExists(): void
     {

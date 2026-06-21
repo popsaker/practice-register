@@ -33,7 +33,7 @@
             <input type="hidden" name="id" value="<?php echo e($car['id']); ?>">
             <button type="submit" class="btn-red">Положить в корзину</button>
           </form>
-          <a href="#" class="btn-out">Получить консультацию</a>
+          <a href="#" class="btn-out" data-placeholder="consult">Получить консультацию</a>
         </div>
       </div>
     </div>

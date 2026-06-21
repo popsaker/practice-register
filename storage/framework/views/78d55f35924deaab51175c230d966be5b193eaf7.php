@@ -35,6 +35,29 @@
     © 2026 RED LEASING. Все права защищены.
   </footer>
 
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      document.body.addEventListener('click', function (event) {
+        var target = event.target;
+        while (target && target !== document.body) {
+          if (target.dataset && target.dataset.placeholder) {
+            event.preventDefault();
+            var action = target.dataset.placeholder;
+            var message = 'Функция в разработке.';
+            if (action === 'order') {
+              message = 'Оформление заказа находится в работе.';
+            } else if (action === 'consult') {
+              message = 'Получение консультации находится в работе.';
+            }
+            alert(message);
+            return;
+          }
+          target = target.parentElement;
+        }
+      });
+    });
+  </script>
+
   <?php echo $__env->yieldPushContent('scripts'); ?>
 </body>
 </html>
