@@ -1,7 +1,6 @@
 <?php
 
-require __DIR__ . '/../vendor/autoload.php';
-require __DIR__ . '/../config.php';
+require __DIR__ . '/../bootstrap.php';
 
 session_start();
 require_once __DIR__ . '/cart.php';

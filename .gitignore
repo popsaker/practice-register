@@ -1,0 +1,8 @@
+# Local database configuration
+config.php
+
+# Blade view cache
+storage/framework/views/
+
+# Composer dependencies (if you prefer installing locally)
+vendor/
